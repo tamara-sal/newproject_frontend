@@ -11,6 +11,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { login } from "../api"; // your API function
 import type { LoginRequest } from "../api"; // type-only import
+import SchoolIcon from "@mui/icons-material/School";
+
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -47,6 +49,7 @@ const LoginPage: React.FC = () => {
         padding: 2,
       }}
     >
+      
       <Container maxWidth="sm">
         <Card
           sx={{
@@ -56,6 +59,7 @@ const LoginPage: React.FC = () => {
             mx: "auto",
           }}
         >
+          <SchoolIcon sx={{marginLeft: 16.7, fontSize: 70, mb: 2, color: "#1a0943ff", }} />
           <Typography
             variant="h4"
             component="h1"

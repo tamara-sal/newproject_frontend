@@ -37,10 +37,11 @@ export default function App() {
       <CssBaseline />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<CoverPage />} />
+          <Route path="/" element={<Login/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/CoverPage" element={<CoverPage/>}/>
 
           {/* Select faculty/course */}
           <Route path="/upload/select" element={<SelectCourse />} />

@@ -2,6 +2,7 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import CoverPage from "../pages/CoverPage";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ export default function Navbar() {
         <Button color="inherit" onClick={() => navigate("/upload")}>
           Upload
         </Button>
-        <Button color="inherit" onClick={() => navigate("/")}>
+        <Button color="inherit" onClick={() => navigate("/CoverPage")}>
           Logout
         </Button>
       </Toolbar>
