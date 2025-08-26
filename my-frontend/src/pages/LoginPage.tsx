@@ -7,18 +7,24 @@ import {
   Button,
   Container,
   Link,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api"; // your API function
 import type { LoginRequest } from "../api"; // type-only import
 import SchoolIcon from "@mui/icons-material/School";
 
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  const handleToggle = () => setShowPassword(!showPassword);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,11 +33,9 @@ const LoginPage: React.FC = () => {
     const loginData: LoginRequest = { email, password };
 
     try {
-      const response = await login(loginData); // call your backend
+      const response = await login(loginData);
       console.log("Login successful:", response);
-      // You can save token in localStorage if needed:
-      // localStorage.setItem("token", response.token);
-      navigate("/dashboard"); // redirect after login
+      navigate("/dashboard");
     } catch (err: any) {
       setError(err.message || "Login failed");
     }
@@ -49,17 +53,11 @@ const LoginPage: React.FC = () => {
         padding: 2,
       }}
     >
-      
       <Container maxWidth="sm">
-        <Card
-          sx={{
-            p: 4,
-            width: "100%",
-            maxWidth: 400,
-            mx: "auto",
-          }}
-        >
-          <SchoolIcon sx={{marginLeft: 16.7, fontSize: 70, mb: 2, color: "#1a0943ff", }} />
+        <Card sx={{ p: 4, width: "100%", maxWidth: 400, mx: "auto" }}>
+          <SchoolIcon
+            sx={{ display: "block", mx: "auto", fontSize: 70, mb: 2, color: "#1a0943ff" }}
+          />
           <Typography
             variant="h4"
             component="h1"
@@ -87,19 +85,22 @@ const LoginPage: React.FC = () => {
             <TextField
               fullWidth
               label="Password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               margin="normal"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={handleToggle}>
+                      {showPassword ? <FaEye /> : <FaEyeSlash />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
-              sx={{ mt: 3, mb: 2, py: 1.5 }}
-              size="large"
-            >
+            <Button type="submit" variant="contained" fullWidth sx={{ mt: 3, mb: 2, py: 1.5 }} size="large">
               Login
             </Button>
             <Box textAlign="center">
