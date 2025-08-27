@@ -26,16 +26,21 @@ const SignupPage: React.FC = () => {
   const handleToggle = () => setShowPassword(!showPassword);
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setError(null);
+    e.preventDefault();
+    setError(null);
 
-        try {
-            await signup({ name, email, password });
-            navigate("/login");
-        } catch (err: any) {
-            setError(err.response?.data?.error || "Signup failed");
-        }
-    };
+    try {
+      const res = await signup({ name, email, password });
+
+      // Store user info and token after signup
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      localStorage.setItem("token", res.data.token);
+
+      navigate("/dashboard"); // go directly to dashboard
+    } catch (err: any) {
+      setError(err.response?.data?.error || "Signup failed");
+    }
+  };
 
   return (
     <Box

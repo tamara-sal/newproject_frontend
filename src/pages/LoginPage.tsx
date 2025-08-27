@@ -25,17 +25,22 @@ const LoginPage: React.FC = () => {
   const handleToggle = () => setShowPassword(!showPassword);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setError(null);
+    e.preventDefault();
+    setError(null);
 
-        try {
-            const res = await login({ email, password });
-            localStorage.setItem("user", JSON.stringify(res.data.user));
-            navigate("/dashboard");
-        } catch (err: any) {
-            setError(err.response?.data?.error || "Login failed");
-        }
-    };
+    try {
+      const res = await login({ email, password });
+
+      // Store user info and JWT token in localStorage
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      localStorage.setItem("token", res.data.token);
+
+      navigate("/dashboard");
+    } catch (err: any) {
+      setError(err.response?.data?.error || "Login failed");
+    }
+  };
+
   return (
     <Box
       sx={{
