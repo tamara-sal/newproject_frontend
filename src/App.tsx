@@ -1,60 +1,82 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
-import CoverPage from "./pages/CoverPage";
+import Dashboard from "./pages/Dash2";
 import Login from "./pages/LoginPage";
 import Signup from "./pages/SignupPage";
-import Dashboard from "./pages/Dashboard";
-import UploadNote from "./pages/UploadNote";
-import SelectCourse from "./pages/CourseSelection";
+import Profile from "./pages/Profile";
+import Contact from "./pages/Contact";
+import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
+import Footer from "./components/Footer";
 
-// Create a theme instance
-const theme = createTheme({
-  palette: {
-    primary: { main: "#0a0243ff", light: "#092fa15f", dark: "#09023fff" },
-    secondary: { main: "#081b61ff", light: "#12096eff", dark: "#060235ff" },
-    background: { default: "#f5f5f5" },
-  },
-  typography: {
-    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
-    h2: { fontWeight: 700 },
-    h4: { fontWeight: 600 },
-    h5: { fontWeight: 500 },
-    h6: { fontWeight: 500 },
-  },
-  shape: { borderRadius: 12 },
-  components: {
-    MuiButton: { styleOverrides: { root: { textTransform: "none", fontWeight: 600, borderRadius: 8 } } },
-    MuiCard: { styleOverrides: { root: { borderRadius: 12, boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)" } } },
-  },
-});
+// Theme (keep yours)
+const theme = createTheme({ /* ... your theme ... */ });
+
+const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
+
+  if (!user) return <Navigate to="/login" />;
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+  };
+
+  return (
+    <>
+      <Navbar user={user} onLogout={handleLogout} onSidebarToggle={toggleSidebar} />
+      <Sidebar open={sidebarOpen} onClose={toggleSidebar} />
+      <div style={{ minHeight: "calc(100vh - 64px)", paddingTop: "64px" }}>{children}</div>
+      <Footer />
+    </>
+  );
+};
 
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <BrowserRouter>
-        <Routes>
-          
-          <Route path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+      <Routes>
+        {/* Public */}
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
 
-          
-          <Route path="/dashboard" element={<Dashboard />} />
+        {/* Protected */}
+        <Route
+          path="/dashboard"
+          element={
+            <AuthLayout>
+              <Dashboard />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <AuthLayout>
+              <Profile />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="/contact"
+          element={
+            <AuthLayout>
+              <Contact />
+            </AuthLayout>
+          }
+        />
 
-          
-          <Route path="/CoverPage" element={<CoverPage />} />
-
-          
-          <Route path="/upload/select" element={<SelectCourse />} />
-
-          
-          <Route path="/upload" element={<UploadNote />} />
-        </Routes>
-      </BrowserRouter>
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/dashboard" />} />
+      </Routes>
     </ThemeProvider>
   );
 }
