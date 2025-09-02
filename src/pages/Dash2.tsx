@@ -23,7 +23,7 @@ interface Note {
 }
 
 interface DashboardProps {
-  onSidebarToggle?: () => void; // toggle function from layout
+  onSidebarToggle?: () => void;
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ onSidebarToggle }) => {
@@ -35,7 +35,11 @@ const Dashboard: React.FC<DashboardProps> = ({ onSidebarToggle }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: "success" | "error" }>({ open: false, message: "", severity: "success" });
+  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; severity: "success" | "error" }>({
+    open: false,
+    message: "",
+    severity: "success",
+  });
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -102,7 +106,22 @@ const Dashboard: React.FC<DashboardProps> = ({ onSidebarToggle }) => {
   return (
     <Box sx={{ flexGrow: 1, pt: "80px", px: 3, display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
       <Box sx={{ width: "100%", maxWidth: 800, mb: 2, display: "flex", gap: 2 }}>
-        <TextField fullWidth label="Search Notes" value={search} onChange={(e) => setSearch(e.target.value)} />
+        <TextField
+  fullWidth
+  label="Search Notes"
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  sx={{
+    "& label": { color: "#60116c" }, // label color
+    "& label.Mui-focused": { color: "#9c27b0" }, // focused label color
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": { borderColor: "#60116c" }, // border color
+      "&:hover fieldset": { borderColor: "#9c27b0" }, // hover border
+      "&.Mui-focused fieldset": { borderColor: "#60116c" }, // focused border
+      "& input": { color: "#60116c" }, // input text color
+    },
+  }}
+/>
         <Button variant="contained" sx={{ backgroundColor: "#6a0dad", color: "#fff" }} onClick={() => handleDialogOpen()}>
           Add Note
         </Button>
@@ -137,10 +156,22 @@ const Dashboard: React.FC<DashboardProps> = ({ onSidebarToggle }) => {
                 {note.description || "No description added yet."}
               </Typography>
               <Box sx={{ mt: 1 }}>
-                <Button sx={{ mr: 1, backgroundColor: "#6a0dad", color: "#fff" }} onClick={(e) => { e.stopPropagation(); handleDialogOpen(note); }}>
+                <Button
+                  sx={{ mr: 1, backgroundColor: "#6a0dad", color: "#fff" }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDialogOpen(note);
+                  }}
+                >
                   Edit
                 </Button>
-                <Button color="error" onClick={(e) => { e.stopPropagation(); handleDelete(note._id); }}>
+                <Button
+                  color="error"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(note._id);
+                  }}
+                >
                   Delete
                 </Button>
               </Box>
@@ -156,8 +187,45 @@ const Dashboard: React.FC<DashboardProps> = ({ onSidebarToggle }) => {
           {editingNote ? "Edit Note" : "Create Note"}
         </DialogTitle>
         <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 2 }}>
-          <TextField label="Title" placeholder="Enter note title" value={title} onChange={(e) => setTitle(e.target.value)} fullWidth variant="outlined" margin="dense" />
-          <TextField label="Description" placeholder="Write your note here..." value={description} onChange={(e) => setDescription(e.target.value)} multiline rows={5} fullWidth variant="outlined" />
+          <TextField
+            label="Title"
+            placeholder="Enter note title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            fullWidth
+            variant="outlined"
+            margin="dense"
+            sx={{
+              "& label": { color: "#60116c" },
+              "& label.Mui-focused": { color: "#9c27b0" },
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { borderColor: "#60116c" },
+                "&:hover fieldset": { borderColor: "#9c27b0" },
+                "&.Mui-focused fieldset": { borderColor: "#60116c" },
+                "& input::placeholder": { color: "#9c27b0", opacity: 1 },
+              },
+            }}
+          />
+          <TextField
+            label="Description"
+            placeholder="Write your note here..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            multiline
+            rows={5}
+            fullWidth
+            variant="outlined"
+            sx={{
+              "& label": { color: "#60116c" },
+              "& label.Mui-focused": { color: "#9c27b0" },
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { borderColor: "#60116c" },
+                "&:hover fieldset": { borderColor: "#9c27b0" },
+                "&.Mui-focused fieldset": { borderColor: "#60116c" },
+                "& input::placeholder": { color: "#9c27b0", opacity: 1 },
+              },
+            }}
+          />
         </DialogContent>
         <DialogActions sx={{ justifyContent: "space-between" }}>
           <Button onClick={() => setDialogOpen(false)}>Cancel</Button>

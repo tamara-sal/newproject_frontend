@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,6 +11,8 @@ import Contact from "./pages/Contact";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Footer from "./components/Footer";
+import CoverPage from "./pages/CoverPage";
+import SplashLoader from "./AnimatedLogo";
 
 // Theme (keep yours)
 const theme = createTheme({ /* ... your theme ... */ });
@@ -39,6 +41,16 @@ const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 };
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate splash duration
+    const timer = setTimeout(() => setLoading(false), 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <SplashLoader onFinish={() => setLoading(false)} />;
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -47,6 +59,7 @@ export default function App() {
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/Coverpage" element={<CoverPage />} />
 
         {/* Protected */}
         <Route

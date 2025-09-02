@@ -9,9 +9,10 @@ const Footer: React.FC = () => (
       <Typography variant="body2">Unity for Continuity</Typography>
       <Typography variant="body2">All rights Reserved Africell - 2025</Typography>
       <Stack direction="row" spacing={2} mt={1}>
-        <Link href="#" color="inherit"><FaFacebook /></Link>
-        <Link href="#" color="inherit"><FaTwitter /></Link>
-        <Link href="#" color="inherit"><FaInstagram /></Link>
+        <Link href="https://www.facebook.com/AfricellSierraLeone" color="inherit" target="_blank" rel="noopener noreferrer">  <FaFacebook size ={24} /></Link>
+        <Link href="https://x.com/africellgroup?lang=en" color="inherit" target="_blank" rel="noopener noreferrer">  
+        <FaTwitter size={24} /></Link>
+        <Link href="https://www.instagram.com/africellgroup/?hl=en" color="inherit"target="_blank" rel="noopener noreferrer"><FaInstagram size={24} /></Link>
       </Stack>
     </Stack>
   </Box>

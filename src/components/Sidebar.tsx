@@ -19,7 +19,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
   };
 
   return (
-    <Drawer anchor="left" open={open} onClose={onClose}>
+    <Drawer anchor="left" open={open} onClose={onClose} >
       <List sx={{ width: 250 }}>
         <ListItemButton onClick={() => handleNavigate("/dashboard")}>
           <ListItemIcon>

@@ -1,55 +1,77 @@
-import React from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import L from "leaflet";
-import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
-import markerIcon from "leaflet/dist/images/marker-icon.png";
-import markerShadow from "leaflet/dist/images/marker-shadow.png";
-
-// Fix default Leaflet marker icon
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: markerIcon2x,
-  iconUrl: markerIcon,
-  shadowUrl: markerShadow,
-});
+import React, { useState } from "react";
+import { Box, Typography, Paper, Button } from "@mui/material";
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
 
 const Contact: React.FC = () => {
-  const position: [number, number] = [33.888630, 35.495480]; // Beirut coordinates
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
+  const handleOpenMaps = () => {
+    window.open(
+      "https://www.google.com/maps?q=33.89811743237185,35.50717165997794",
+      "_blank"
+    );
+  };
+
+  // Dummy user (replace with your auth state)
+  const user = { name: "John Doe", email: "john@example.com" };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // clear auth
+    window.location.href = "/login";
+  };
 
   return (
-    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "2rem" }}>
-      <h1 style={{ textAlign: "center", marginBottom: "2rem" }}>Contact Us</h1>
+    <div style={{ display: "flex", minHeight: "100vh", flexDirection: "column" }}>
+      <Navbar user={user} onLogout={handleLogout} onSidebarToggle={toggleSidebar} />
+      <Sidebar open={sidebarOpen} onClose={toggleSidebar} />
 
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "2rem" }}>
-        {/* Info Card */}
-        <div style={{
-          flex: "1 1 300px",
-          padding: "1.5rem",
-          borderRadius: "10px",
-          boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-          backgroundColor: "#fff",
-          minWidth: "300px"
-        }}>
-          <h2>Our Office</h2>
-          <p>123 Main Street, Beirut, Lebanon</p>
-          <p>Phone: +961 71 234 567 (Africell)</p>
-          <p>Email: africell.com</p>
-          <p>Website: <a href="https://www.africell.com/contact-press/" target="_blank" rel="noopener noreferrer">www.africell/contactUs.com</a></p>
-        </div>
+      <Box sx={{ flexGrow: 1, padding: "3rem 1rem", maxWidth: "1200px", margin: "0 auto" }}>
+        <Typography variant="h4" sx={{ textAlign: "center", mb: 4, fontWeight: "bold", color: "#60116c" }}>
+          Contact Us
+        </Typography>
 
-        {/* Map */}
-        <div style={{ flex: "2 1 500px", minHeight: "400px", borderRadius: "10px", overflow: "hidden", boxShadow: "0 4px 10px rgba(0,0,0,0.1)" }}>
-          <MapContainer center={position} zoom={15} scrollWheelZoom={false} style={{ height: "100%", width: "100%" }}>
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+        <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1.5fr 2fr" }, gap: 4 }}>
+          {/* Info Card */}
+          <Paper sx={{ p: 4, borderRadius: 3, boxShadow: 3, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <Typography variant="h5" sx={{ mb: 2, color: "#333" }}>Our Office</Typography>
+            <Typography sx={{ mb: 1 }}>
+              <strong>Al-Nahar Building</strong>, 7th Floor, Beirut, Lebanon
+            </Typography>
+            <Typography sx={{ mb: 1 }}>
+              📞 <a href="tel:+96171234567" style={{ color: "#60116c", textDecoration: "none" }}>+961 71 234 567</a>
+            </Typography>
+            <Typography sx={{ mb: 1 }}>
+              <strong> website:</strong> <a href="https://www.africell.com" style={{ color: "#60116c", textDecoration: "none" }}>info@africell.com</a>
+            </Typography>
+            <Typography sx={{ mb: 1 }}>
+               <strong> contact us: </strong><a href="https://www.africell.com/contact-press/" target="_blank" rel="noopener noreferrer" style={{ color: "#60116c", textDecoration: "none" }}>
+                www.africell.com/contact
+              </a>
+            </Typography>
+            <Button variant="contained" sx={{ mt: 2, backgroundColor: "#60116c" }} onClick={handleOpenMaps}>
+              Open in Google Maps
+            </Button>
+          </Paper>
+
+          {/* Map Placeholder */}
+          <Paper sx={{ borderRadius: 3, boxShadow: 3, minHeight: 450, backgroundColor: "#eee" }}>
+            
+            <iframe
+              title="Office Location"
+              src="https://www.google.com/maps?q=33.89811743237185, 35.50717165997794&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0, borderRadius: "12px" }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
             />
-            <Marker position={position}>
-              <Popup>Our Office Location</Popup>
-            </Marker>
-          </MapContainer>
-        </div>
-      </div>
+          </Paper>
+        </Box>
+      </Box>
     </div>
   );
 };

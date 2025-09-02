@@ -3,6 +3,7 @@ import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, Avatar } from 
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 
+
 interface NavbarProps {
   user: { name: string; email: string };
   onLogout: () => void;
@@ -23,16 +24,16 @@ const Navbar: React.FC<NavbarProps> = ({ user, onLogout, onSidebarToggle }) => {
     navigate(path);
     handleMenuClose();
   };
+  
 
   return (
     <AppBar position="fixed" sx={{ backgroundColor: "#6a0dad" }}>
       <Toolbar>
+        
         <IconButton color="inherit" edge="start" onClick={onSidebarToggle}>
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Dashboard
-        </Typography>
+        
         <IconButton onClick={handleProfileMenuOpen}>
           <Avatar>{user.name[0].toUpperCase()}</Avatar>
         </IconButton>
