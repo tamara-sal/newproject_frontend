@@ -1,7 +1,14 @@
 import React from "react";
-import { Drawer, List, ListItem, ListItemText, ListItemIcon ,ListItemButton} from "@mui/material";
+import {
+  Drawer,
+  List,
+  ListItemButton,
+  ListItemText,
+  ListItemIcon,
+} from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import { useNavigate } from "react-router-dom";
 
@@ -19,7 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
   };
 
   return (
-    <Drawer anchor="left" open={open} onClose={onClose} >
+    <Drawer anchor="left" open={open} onClose={onClose}>
       <List sx={{ width: 250 }}>
         <ListItemButton onClick={() => handleNavigate("/dashboard")}>
           <ListItemIcon>
@@ -40,6 +47,20 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
             <ContactMailIcon />
           </ListItemIcon>
           <ListItemText primary="Contact Us" />
+        </ListItemButton>
+
+        <ListItemButton onClick={() => handleNavigate("/fashion")}>
+          <ListItemIcon>
+            <ShoppingBagIcon />
+          </ListItemIcon>
+          <ListItemText primary="Fashion" />
+        </ListItemButton>
+
+        <ListItemButton onClick={() => handleNavigate("/addclothes")}>
+          <ListItemIcon>
+            <ShoppingBagIcon />
+          </ListItemIcon>
+          <ListItemText primary="Add Clothes" />
         </ListItemButton>
       </List>
     </Drawer>

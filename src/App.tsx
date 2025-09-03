@@ -13,9 +13,13 @@ import Sidebar from "./components/Sidebar";
 import Footer from "./components/Footer";
 import CoverPage from "./pages/CoverPage";
 import SplashLoader from "./AnimatedLogo";
+import FashionPage from "./pages/Main";  // Using FashionPage for /fashion route
+import AddCloth from "./pages/AddClothing";
+import { Box } from "@mui/material";
+import Women from "./pages/Women";
+import Men from "./pages/Men";
 
-// Theme (keep yours)
-const theme = createTheme({ /* ... your theme ... */ });
+const theme = createTheme({ /* your theme here */ });
 
 const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
@@ -28,13 +32,16 @@ const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
+    window.location.href = "/login"; // redirect after logout
   };
 
   return (
     <>
       <Navbar user={user} onLogout={handleLogout} onSidebarToggle={toggleSidebar} />
       <Sidebar open={sidebarOpen} onClose={toggleSidebar} />
-      <div style={{ minHeight: "calc(100vh - 64px)", paddingTop: "64px" }}>{children}</div>
+      <Box sx={{ minHeight: "calc(100vh - 64px)", pt: "64px" }}>
+        {children}
+      </Box>
       <Footer />
     </>
   );
@@ -44,7 +51,6 @@ export default function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate splash duration
     const timer = setTimeout(() => setLoading(false), 3000);
     return () => clearTimeout(timer);
   }, []);
@@ -55,41 +61,56 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Routes>
-        {/* Public */}
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/Coverpage" element={<CoverPage />} />
+  {/* Public */}
+  <Route path="/" element={<Navigate to="/login" />} />
+  <Route path="/login" element={<Login />} />
+  <Route path="/signup" element={<Signup />} />
+  <Route path="/coverpage" element={<CoverPage />} />
+  
+  {/* Fashion */}
+  <Route path="/fashion" element={<FashionPage />} />
+  <Route path="/fashion/men" element={<Men />} />
+  <Route path="/fashion/women" element={<Women />} />
 
-        {/* Protected */}
-        <Route
-          path="/dashboard"
-          element={
-            <AuthLayout>
-              <Dashboard />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <AuthLayout>
-              <Profile />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path="/contact"
-          element={
-            <AuthLayout>
-              <Contact />
-            </AuthLayout>
-          }
-        />
+  {/* Protected */}
+  <Route
+    path="/dashboard"
+    element={
+      <AuthLayout>
+        <Dashboard />
+      </AuthLayout>
+    }
+  />
+  <Route
+    path="/profile"
+    element={
+      <AuthLayout>
+        <Profile />
+      </AuthLayout>
+    }
+  />
+  <Route
+    path="/contact"
+    element={
+      <AuthLayout>
+        <Contact />
+      </AuthLayout>
+    }
+  />
+  <Route
+    path="/addclothes"
+    element={
+      <AuthLayout>
+        <AddCloth />
+      </AuthLayout>
+    }
+  />
 
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
-      </Routes>
+  {/* Catch all */}
+  <Route path="*" element={<Navigate to="/dashboard" />} />
+</Routes>
+
+      
     </ThemeProvider>
   );
 }
